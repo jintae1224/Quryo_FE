@@ -52,3 +52,15 @@
   --chart-4: #a855f7;
   --chart-5: #ec4899;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
