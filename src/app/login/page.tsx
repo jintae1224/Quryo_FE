@@ -23,12 +23,13 @@ export default function LoginPage() {
 
   return (
     <div className={cx("container")}>
-      {/* Background Pattern */}
+      {/* Background Gradient */}
       <BackgroundPlus
-        plusColor="#10b981"
+        primaryColor="#10b981"
+        secondaryColor="#059669"
         backgroundColor="hsl(var(--background))"
-        fade={true}
-        className="opacity-30"
+        direction="to-br"
+        opacity={0.15}
       />
 
       {/* Gradient Overlay */}
