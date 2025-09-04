@@ -1,43 +1,56 @@
+import classNames from 'classnames/bind';
 import React from 'react';
 
-interface PlusPatternBackgroundProps {
-  plusSize?: number;
-  plusColor?: string;
+import styles from './BackgroundPlus.module.css';
+
+const cx = classNames.bind(styles);
+
+interface BackgroundGradientProps {
+  primaryColor?: string;
+  secondaryColor?: string;
   backgroundColor?: string;
   className?: string;
   style?: React.CSSProperties;
-  fade?: boolean;
+  direction?: 'to-br' | 'to-tr' | 'to-bl' | 'to-tl' | 'to-b' | 'to-t';
+  opacity?: number;
   [key: string]: unknown;
 }
 
 export default function BackgroundPlus({
-  plusColor = '#3b82f6',
-  backgroundColor = 'transparent',
-  plusSize = 60,
+  primaryColor: _primaryColor = '#10b981',
+  secondaryColor: _secondaryColor = '#059669',
+  backgroundColor = 'hsl(var(--background))',
   className,
-  fade = true,
+  direction = 'to-br',
+  opacity = 0.05,
   style,
   ...props
-}: PlusPatternBackgroundProps) {
-  const encodedPlusColor = encodeURIComponent(plusColor);
-
-  const maskStyle: React.CSSProperties = fade
-    ? {
-        maskImage: 'radial-gradient(circle, white 10%, transparent 90%)',
-        WebkitMaskImage: 'radial-gradient(circle, white 10%, transparent 90%)',
-      }
-    : {};
+}: BackgroundGradientProps) {
+  const gradientDirectionMap = {
+    'to-br': 'to bottom right',
+    'to-tr': 'to top right',
+    'to-bl': 'to bottom left',
+    'to-tl': 'to top left',
+    'to-b': 'to bottom',
+    'to-t': 'to top',
+  };
 
   const backgroundStyle: React.CSSProperties = {
     backgroundColor,
-    backgroundImage: `url("data:image/svg+xml,%3Csvg width='${plusSize}' height='${plusSize}' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='${encodedPlusColor}' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-    ...maskStyle,
+    backgroundImage: `
+      radial-gradient(circle at 20% 30%, rgba(16, 185, 129, ${opacity * 0.6}) 0%, transparent 50%), 
+      radial-gradient(circle at 80% 70%, rgba(5, 150, 105, ${opacity * 0.8}) 0%, transparent 50%),
+      linear-gradient(${gradientDirectionMap[direction]}, 
+        rgba(16, 185, 129, ${opacity * 0.3}), 
+        transparent 40%, 
+        transparent 60%,
+        rgba(5, 150, 105, ${opacity * 0.3}))`,
     ...style,
   };
 
   return (
     <div
-      className={`absolute inset-0 h-full w-full ${className}`}
+      className={cx('backgroundPlus', className)}
       style={backgroundStyle}
       {...props}
     />
