@@ -23,16 +23,11 @@ export async function GET(request: Request) {
   try {
     const { error } = await supabase
       .from("users")
-      .select("id")
-      .eq("id", user.id)
+      .select("user_email")
+      .eq("user_email", user.email)
       .single();
 
     if (error) {
-      if (error.code === "PGRST116") {
-        // 등록되지 않은 사용자 -> 회원가입 페이지로
-        return NextResponse.redirect(`${origin}/signup`);
-      }
-      console.error("사용자 정보 조회 오류:", error);
       return NextResponse.redirect(`${origin}/error`);
     }
 
