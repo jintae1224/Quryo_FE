@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import React, { useState } from "react";
 
-import GoogleIcon from "@/app/_components/Icon/GoogleIcon/GoogleIcon";
+import GoogleIcon from "@/app/_components/Icon/GoogleIcon";
 import oAuthSignIn from "@/utils/supabase/login";
 
 import styles from "./GoogleLoginButton.module.css";
