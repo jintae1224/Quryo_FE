@@ -1,14 +1,31 @@
-'use client';
+"use client";
 
-import { useCallback } from 'react';
+import { useCallback } from "react";
 
-import type { ApiResponse } from '@/types';
+import { ApiResponse } from "@/types/api";
 
-export interface ApiError {
-  message: string;
+export class ApiError extends Error {
   status?: number;
   code?: string;
   details?: unknown;
+
+  constructor({
+    message,
+    status,
+    code,
+    details,
+  }: {
+    message: string;
+    status?: number;
+    code?: string;
+    details?: unknown;
+  }) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+    this.code = code;
+    this.details = details;
+  }
 }
 
 export interface RequestOptions extends RequestInit {
@@ -23,20 +40,20 @@ class ApiClient {
   private defaultRetries: number = 3;
   private defaultRetryDelay: number = 1000; // 1초
 
-  constructor(baseUrl: string = '') {
+  constructor(baseUrl: string = "") {
     this.baseUrl = baseUrl;
   }
 
   private async sleep(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   private async fetchWithTimeout(
-    url: string, 
+    url: string,
     options: RequestOptions
   ): Promise<Response> {
     const { timeout = this.defaultTimeout, ...fetchOptions } = options;
-    
+
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
 
@@ -45,7 +62,7 @@ class ApiClient {
         ...fetchOptions,
         signal: controller.signal,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           ...fetchOptions.headers,
         },
       });
@@ -54,27 +71,27 @@ class ApiClient {
       return response;
     } catch (error) {
       clearTimeout(timeoutId);
-      
-      if (error instanceof Error && error.name === 'AbortError') {
+
+      if (error instanceof Error && error.name === "AbortError") {
         throw new Error(`Request timeout after ${timeout}ms`);
       }
-      
+
       throw error;
     }
   }
 
   private async handleResponse<T>(response: Response): Promise<T> {
-    const contentType = response.headers.get('content-type');
-    
+    const contentType = response.headers.get("content-type");
+
     // JSON 응답이 아닌 경우
-    if (!contentType || !contentType.includes('application/json')) {
+    if (!contentType || !contentType.includes("application/json")) {
       if (!response.ok) {
         throw new ApiError({
           message: `HTTP ${response.status}: ${response.statusText}`,
           status: response.status,
         });
       }
-      
+
       // 빈 응답 처리
       const text = await response.text();
       return (text ? JSON.parse(text) : {}) as T;
@@ -84,9 +101,9 @@ class ApiClient {
     const data: ApiResponse<T> = await response.json();
 
     // API 응답 형식 검증
-    if (typeof data.success !== 'boolean') {
+    if (typeof data.success !== "boolean") {
       throw new ApiError({
-        message: 'Invalid API response format',
+        message: "Invalid API response format",
         status: response.status,
       });
     }
@@ -94,7 +111,7 @@ class ApiClient {
     // API 에러 응답
     if (!data.success) {
       throw new ApiError({
-        message: data.message || 'API request failed',
+        message: data.message || "API request failed",
         status: response.status,
         details: data,
       });
@@ -103,7 +120,8 @@ class ApiClient {
     // HTTP 에러 상태
     if (!response.ok) {
       throw new ApiError({
-        message: data.message || `HTTP ${response.status}: ${response.statusText}`,
+        message:
+          data.message || `HTTP ${response.status}: ${response.statusText}`,
         status: response.status,
         details: data,
       });
@@ -112,16 +130,13 @@ class ApiClient {
     return data.data as T;
   }
 
-  async request<T>(
-    endpoint: string, 
-    options: RequestOptions = {}
-  ): Promise<T> {
-    const { 
-      retries = this.defaultRetries, 
+  async request<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+    const {
+      retries = this.defaultRetries,
       retryDelay = this.defaultRetryDelay,
-      ...requestOptions 
+      ...requestOptions
     } = options;
-    
+
     const url = `${this.baseUrl}${endpoint}`;
     let lastError: Error;
 
@@ -131,12 +146,12 @@ class ApiClient {
         return await this.handleResponse<T>(response);
       } catch (error) {
         lastError = error instanceof Error ? error : new Error(String(error));
-        
+
         // 마지막 시도이거나 재시도할 수 없는 에러
         if (attempt === retries || this.shouldNotRetry(error)) {
           throw lastError;
         }
-        
+
         // 재시도 전 지연
         if (attempt < retries) {
           await this.sleep(retryDelay * Math.pow(2, attempt)); // 지수 백오프
@@ -154,41 +169,47 @@ class ApiClient {
         return true;
       }
     }
-    
+
     return false;
   }
 
   // Convenience methods
-  async get<T>(endpoint: string, options?: Omit<RequestOptions, 'method' | 'body'>): Promise<T> {
-    return this.request<T>(endpoint, { ...options, method: 'GET' });
+  async get<T>(
+    endpoint: string,
+    options?: Omit<RequestOptions, "method" | "body">
+  ): Promise<T> {
+    return this.request<T>(endpoint, { ...options, method: "GET" });
   }
 
   async post<T>(
-    endpoint: string, 
-    data?: unknown, 
-    options?: Omit<RequestOptions, 'method' | 'body'>
+    endpoint: string,
+    data?: unknown,
+    options?: Omit<RequestOptions, "method" | "body">
   ): Promise<T> {
     return this.request<T>(endpoint, {
       ...options,
-      method: 'POST',
+      method: "POST",
       body: data ? JSON.stringify(data) : undefined,
     });
   }
 
   async put<T>(
-    endpoint: string, 
-    data?: unknown, 
-    options?: Omit<RequestOptions, 'method' | 'body'>
+    endpoint: string,
+    data?: unknown,
+    options?: Omit<RequestOptions, "method" | "body">
   ): Promise<T> {
     return this.request<T>(endpoint, {
       ...options,
-      method: 'PUT',
+      method: "PUT",
       body: data ? JSON.stringify(data) : undefined,
     });
   }
 
-  async delete<T>(endpoint: string, options?: Omit<RequestOptions, 'method' | 'body'>): Promise<T> {
-    return this.request<T>(endpoint, { ...options, method: 'DELETE' });
+  async delete<T>(
+    endpoint: string,
+    options?: Omit<RequestOptions, "method" | "body">
+  ): Promise<T> {
+    return this.request<T>(endpoint, { ...options, method: "DELETE" });
   }
 }
 
@@ -196,21 +217,47 @@ class ApiClient {
 const apiClient = new ApiClient();
 
 export const useApi = () => {
-  const get = useCallback(<T>(endpoint: string, options?: Omit<RequestOptions, 'method' | 'body'>) => {
-    return apiClient.get<T>(endpoint, options);
-  }, []);
+  const get = useCallback(
+    <T>(
+      endpoint: string,
+      options?: Omit<RequestOptions, "method" | "body">
+    ) => {
+      return apiClient.get<T>(endpoint, options);
+    },
+    []
+  );
 
-  const post = useCallback(<T>(endpoint: string, data?: unknown, options?: Omit<RequestOptions, 'method' | 'body'>) => {
-    return apiClient.post<T>(endpoint, data, options);
-  }, []);
+  const post = useCallback(
+    <T>(
+      endpoint: string,
+      data?: unknown,
+      options?: Omit<RequestOptions, "method" | "body">
+    ) => {
+      return apiClient.post<T>(endpoint, data, options);
+    },
+    []
+  );
 
-  const put = useCallback(<T>(endpoint: string, data?: unknown, options?: Omit<RequestOptions, 'method' | 'body'>) => {
-    return apiClient.put<T>(endpoint, data, options);
-  }, []);
+  const put = useCallback(
+    <T>(
+      endpoint: string,
+      data?: unknown,
+      options?: Omit<RequestOptions, "method" | "body">
+    ) => {
+      return apiClient.put<T>(endpoint, data, options);
+    },
+    []
+  );
 
-  const del = useCallback(<T>(endpoint: string, options?: Omit<RequestOptions, 'method' | 'body'>) => {
-    return apiClient.delete<T>(endpoint, options);
-  }, []);
+  const del = useCallback(
+    <T>(
+      endpoint: string,
+      options?: Omit<RequestOptions, "method" | "body">
+    ) => {
+      return apiClient.delete<T>(endpoint, options);
+    },
+    []
+  );
 
   return {
     get,

@@ -2,9 +2,9 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { useApi } from "@/hooks/utils/useApi";
-import type { ProjectData, ProjectRequest } from "@/types";
 import { projectKeys } from "@/hooks/projects/useProjectDetail";
+import { useApi } from "@/hooks/utils/useApi";
+import { ProjectData, ProjectRequest } from "@/types/project";
 
 export const useCreateProject = () => {
   const api = useApi();

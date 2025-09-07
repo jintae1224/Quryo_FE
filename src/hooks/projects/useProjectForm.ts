@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
 
 import { DEFAULT_DATABASE } from "@/constants/database";
+import { useCreateProject } from "@/hooks/projects/useCreateProject";
+import { ProjectData, ProjectRequest } from "@/types/project";
 import {
   createInitialFormData,
   projectValidators,
 } from "@/utils/project/projectValid";
-import { useCreateProject } from "@/hooks/projects/useCreateProject";
-import type { ProjectData, ProjectRequest } from "@/types/project";
 
 export interface UseProjectFormOptions {
   onProjectCreated?: (project: ProjectData) => void;
@@ -19,7 +19,7 @@ const INITIAL_FORM_DATA = createInitialFormData(DEFAULT_DATABASE);
 export function useProjectForm({
   onProjectCreated,
   onCancel,
-}: UseProjectFormOptions = {}) {
+}: UseProjectFormOptions) {
   const {
     mutateAsync: createProject,
     isPending: isCreating,
