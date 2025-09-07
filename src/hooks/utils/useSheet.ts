@@ -16,7 +16,7 @@ export const useSheet = () => {
     setIsOpen(false);
   }, []);
 
-  const closeWithAnimation = useCallback(() => {
+  const onClose = useCallback(() => {
     sheetRef.current?.close();
   }, []);
 
@@ -29,7 +29,7 @@ export const useSheet = () => {
     sheetRef,
     openSheet,
     closeSheet,
-    closeWithAnimation,
+    onClose,
     toggleSheet,
   };
 };
