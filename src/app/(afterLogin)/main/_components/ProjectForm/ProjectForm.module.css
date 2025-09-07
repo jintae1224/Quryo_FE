@@ -1,0 +1,122 @@
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  min-width: 480px;
+  max-width: 600px;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.api-error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: hsl(var(--destructive) / 0.1);
+  border: 1px solid hsl(var(--destructive) / 0.2);
+  color: hsl(var(--destructive));
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success State */
+.success-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  gap: 1rem;
+}
+
+.success-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, hsl(142 76% 36% / 0.1) 0%, hsl(142 76% 36% / 0.05) 100%);
+  color: hsl(142 76% 36%);
+  animation: successPulse 0.6s ease-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin: 0;
+}
+
+.success-message {
+  font-size: 1rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.5;
+  margin: 0;
+  max-width: 400px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .create-form {
+    min-width: auto;
+    max-width: none;
+    padding: 1rem;
+  }
+  
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+  
+  .form-actions > button {
+    width: 100%;
+    justify-content: center;
+  }
+}
