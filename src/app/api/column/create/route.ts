@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
 
       const startOrder = (maxOrderResult?.column_order ?? 0) + 1;
 
-      // 컬럼 데이터 준비
+      // 컬럼 데이터 준비 (Foreign Key 필드 제외)
       const columnsToInsert = bulkRequest.columns.map((col, index) => ({
         table_id: bulkRequest.table_id,
         column_name: col.column_name.trim(),
@@ -134,6 +134,40 @@ export async function POST(request: NextRequest) {
           } as ApiResponse,
           { status: 500 }
         );
+      }
+
+      // Foreign Key 관계 생성
+      if (columns && columns.length > 0) {
+        const foreignKeyRelationships = [];
+        
+        for (let i = 0; i < bulkRequest.columns.length; i++) {
+          const col = bulkRequest.columns[i];
+          const createdColumn = columns[i];
+          
+          if (col.is_foreign_key && col.foreign_table_id && col.foreign_column_id && createdColumn) {
+            foreignKeyRelationships.push({
+              source_table_id: bulkRequest.table_id,
+              source_column_id: createdColumn.id,
+              target_table_id: col.foreign_table_id,
+              target_column_id: col.foreign_column_id,
+              constraint_name: col.foreign_key_constraint_name?.trim() || null,
+              on_delete: col.on_delete_action || "CASCADE",
+              on_update: col.on_update_action || "CASCADE",
+            });
+          }
+        }
+
+        // Foreign Key 관계 일괄 생성
+        if (foreignKeyRelationships.length > 0) {
+          const { error: fkError } = await supabase
+            .from("foreign_key_relationships")
+            .insert(foreignKeyRelationships);
+
+          if (fkError) {
+            console.error("Foreign key relationships creation error:", fkError);
+            // 컬럼은 이미 생성되었으므로 경고만 로그
+          }
+        }
       }
 
       return NextResponse.json(
@@ -217,7 +251,7 @@ export async function POST(request: NextRequest) {
 
     const nextOrder = columnRequest.column_order ?? ((maxOrderResult?.column_order ?? 0) + 1);
 
-    // 컬럼 생성
+    // 컬럼 생성 (Foreign Key 필드 제외)
     const { data: column, error } = await supabase
       .from("table_columns")
       .insert({
@@ -255,6 +289,26 @@ export async function POST(request: NextRequest) {
         } as ApiResponse,
         { status: 500 }
       );
+    }
+
+    // Foreign Key 관계 생성
+    if (column && columnRequest.is_foreign_key && columnRequest.foreign_table_id && columnRequest.foreign_column_id) {
+      const { error: fkError } = await supabase
+        .from("foreign_key_relationships")
+        .insert({
+          source_table_id: columnRequest.table_id,
+          source_column_id: column.id,
+          target_table_id: columnRequest.foreign_table_id,
+          target_column_id: columnRequest.foreign_column_id,
+          constraint_name: columnRequest.foreign_key_constraint_name?.trim() || null,
+          on_delete: columnRequest.on_delete_action || "CASCADE",
+          on_update: columnRequest.on_update_action || "CASCADE",
+        });
+
+      if (fkError) {
+        console.error("Foreign key relationship creation error:", fkError);
+        // 컬럼은 이미 생성되었으므로 경고만 로그
+      }
     }
 
     return NextResponse.json(

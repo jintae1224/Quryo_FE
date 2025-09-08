@@ -41,6 +41,13 @@ export function useColumnForm({
         default_value: column.default_value || "",
         is_nullable: column.is_nullable ?? true,
         is_primary_key: column.is_primary_key ?? false,
+        // Foreign Key fields
+        is_foreign_key: column.is_foreign_key ?? false,
+        foreign_table_id: column.foreign_table_id || "",
+        foreign_column_id: column.foreign_column_id || "",
+        foreign_key_constraint_name: column.foreign_key_constraint_name || "",
+        on_delete_action: column.on_delete_action || "CASCADE",
+        on_update_action: column.on_update_action || "CASCADE",
       });
       setErrors({});
     } else if (mode === "create") {
@@ -62,7 +69,14 @@ export function useColumnForm({
     (formData.description || "").trim() !== (column.description || "") ||
     (formData.default_value || "").trim() !== (column.default_value || "") ||
     formData.is_nullable !== (column.is_nullable ?? true) ||
-    formData.is_primary_key !== (column.is_primary_key ?? false)
+    formData.is_primary_key !== (column.is_primary_key ?? false) ||
+    // Foreign Key changes
+    formData.is_foreign_key !== (column.is_foreign_key ?? false) ||
+    formData.foreign_table_id !== (column.foreign_table_id || "") ||
+    formData.foreign_column_id !== (column.foreign_column_id || "") ||
+    formData.foreign_key_constraint_name !== (column.foreign_key_constraint_name || "") ||
+    formData.on_delete_action !== (column.on_delete_action || "CASCADE") ||
+    formData.on_update_action !== (column.on_update_action || "CASCADE")
   );
 
   // 폼 초기화
@@ -77,6 +91,13 @@ export function useColumnForm({
         default_value: column.default_value || "",
         is_nullable: column.is_nullable ?? true,
         is_primary_key: column.is_primary_key ?? false,
+        // Foreign Key fields
+        is_foreign_key: column.is_foreign_key ?? false,
+        foreign_table_id: column.foreign_table_id || "",
+        foreign_column_id: column.foreign_column_id || "",
+        foreign_key_constraint_name: column.foreign_key_constraint_name || "",
+        on_delete_action: column.on_delete_action || "CASCADE",
+        on_update_action: column.on_update_action || "CASCADE",
       });
     }
     setErrors({});
@@ -104,6 +125,31 @@ export function useColumnForm({
       ...prev,
       is_primary_key: checked,
       is_nullable: checked ? false : prev.is_nullable, // PK이면 NOT NULL 강제
+      is_foreign_key: checked ? false : prev.is_foreign_key, // PK이면 FK 해제
+    }));
+  }, []);
+
+  // Foreign Key 변경 시 특별 처리
+  const handleForeignKeyChange = useCallback((checked: boolean) => {
+    setFormData((prev) => ({
+      ...prev,
+      is_foreign_key: checked,
+      is_primary_key: checked ? false : prev.is_primary_key, // FK이면 PK 해제
+      // FK가 해제되면 관련 필드 초기화
+      foreign_table_id: checked ? prev.foreign_table_id : "",
+      foreign_column_id: checked ? prev.foreign_column_id : "",
+      foreign_key_constraint_name: checked ? prev.foreign_key_constraint_name : "",
+      on_delete_action: checked ? prev.on_delete_action : "CASCADE",
+      on_update_action: checked ? prev.on_update_action : "CASCADE",
+    }));
+  }, []);
+
+  // Foreign Table 변경 시 Column 초기화
+  const handleForeignTableChange = useCallback((tableId: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      foreign_table_id: tableId,
+      foreign_column_id: "", // 테이블이 변경되면 컬럼 초기화
     }));
   }, []);
 
@@ -119,6 +165,21 @@ export function useColumnForm({
 
     if (!formData.data_type) {
       newErrors.dataType = "데이터 타입을 선택해주세요";
+    }
+
+    // Foreign Key 검증
+    if (formData.is_foreign_key) {
+      if (!formData.foreign_table_id) {
+        newErrors.foreignTable = "참조할 테이블을 선택해주세요";
+      }
+      if (!formData.foreign_column_id) {
+        newErrors.foreignColumn = "참조할 컬럼을 선택해주세요";
+      }
+    }
+
+    // Primary Key와 Foreign Key 동시 선택 검증
+    if (formData.is_primary_key && formData.is_foreign_key) {
+      newErrors.primaryKey = "Primary Key와 Foreign Key는 동시에 설정할 수 없습니다";
     }
 
     setErrors(newErrors);
@@ -150,6 +211,13 @@ export function useColumnForm({
           default_value: (formData.default_value || "").trim() || undefined,
           is_nullable: formData.is_nullable,
           is_primary_key: formData.is_primary_key,
+          // Foreign Key fields
+          is_foreign_key: formData.is_foreign_key,
+          foreign_table_id: formData.is_foreign_key ? formData.foreign_table_id : undefined,
+          foreign_column_id: formData.is_foreign_key ? formData.foreign_column_id : undefined,
+          foreign_key_constraint_name: formData.is_foreign_key && formData.foreign_key_constraint_name ? formData.foreign_key_constraint_name : undefined,
+          on_delete_action: formData.is_foreign_key ? formData.on_delete_action : undefined,
+          on_update_action: formData.is_foreign_key ? formData.on_update_action : undefined,
         };
 
         const newColumn = await createMutation.mutateAsync(columnRequest);
@@ -178,6 +246,25 @@ export function useColumnForm({
         }
         if (formData.is_primary_key !== (column.is_primary_key ?? false)) {
           updateData.is_primary_key = formData.is_primary_key;
+        }
+        // Foreign Key fields
+        if (formData.is_foreign_key !== (column.is_foreign_key ?? false)) {
+          updateData.is_foreign_key = formData.is_foreign_key;
+        }
+        if (formData.foreign_table_id !== (column.foreign_table_id || "")) {
+          updateData.foreign_table_id = formData.is_foreign_key ? formData.foreign_table_id : undefined;
+        }
+        if (formData.foreign_column_id !== (column.foreign_column_id || "")) {
+          updateData.foreign_column_id = formData.is_foreign_key ? formData.foreign_column_id : undefined;
+        }
+        if (formData.foreign_key_constraint_name !== (column.foreign_key_constraint_name || "")) {
+          updateData.foreign_key_constraint_name = formData.is_foreign_key && formData.foreign_key_constraint_name ? formData.foreign_key_constraint_name : undefined;
+        }
+        if (formData.on_delete_action !== (column.on_delete_action || "CASCADE")) {
+          updateData.on_delete_action = formData.is_foreign_key ? formData.on_delete_action : undefined;
+        }
+        if (formData.on_update_action !== (column.on_update_action || "CASCADE")) {
+          updateData.on_update_action = formData.is_foreign_key ? formData.on_update_action : undefined;
         }
 
         const updatedColumn = await updateMutation.mutateAsync({
@@ -208,6 +295,8 @@ export function useColumnForm({
     dataTypes: DATA_TYPES,
     handleFieldChange,
     handlePrimaryKeyChange,
+    handleForeignKeyChange,
+    handleForeignTableChange,
     handleSubmit,
     handleCancel,
     resetForm,
