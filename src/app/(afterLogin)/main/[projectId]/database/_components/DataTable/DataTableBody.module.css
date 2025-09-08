@@ -1,0 +1,209 @@
+/* Table Body */
+.table-body {
+  background: var(--background);
+}
+
+.table-row {
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.table-row:hover {
+  background: color-mix(in srgb, var(--muted) 30%, transparent);
+}
+
+.table-row.selected {
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.table-row.even {
+  background: color-mix(in srgb, var(--muted) 5%, transparent);
+}
+
+.table-row.selected.even {
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+
+/* Table Cells */
+.cell {
+  padding: 0.75rem 1rem;
+  font-size: 0.8125rem;
+  color: var(--foreground);
+  border-right: 1px solid var(--border);
+  vertical-align: top;
+  max-width: 200px;
+  word-wrap: break-word;
+}
+
+.cell:last-child {
+  border-right: none;
+}
+
+/* Data cells */
+.data-cell {
+  position: relative;
+}
+
+.data-cell.primary-key {
+  background: color-mix(in srgb, #f59e0b 5%, transparent);
+  border-left: 2px solid #f59e0b;
+}
+
+.data-cell.foreign-key {
+  background: color-mix(in srgb, #8b5cf6 5%, transparent);
+  border-left: 2px solid #8b5cf6;
+}
+
+.data-cell.null {
+  background: color-mix(in srgb, var(--muted) 20%, transparent);
+}
+
+/* Selection cell */
+.selection-cell {
+  width: 40px;
+  text-align: center;
+  padding: 0.75rem 0.5rem;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+/* Actions cell */
+.actions-cell {
+  width: 120px;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.table-row:hover .actions {
+  opacity: 1;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--background);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.action-button:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.action-button.edit:hover {
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.action-button.delete:hover {
+  background: color-mix(in srgb, var(--destructive) 10%, transparent);
+  color: var(--destructive);
+  border-color: var(--destructive);
+}
+
+.action-button.more:hover {
+  background: var(--muted);
+}
+
+/* Cell value types */
+.null-value {
+  color: var(--muted-foreground);
+  font-style: italic;
+  font-size: 0.75rem;
+}
+
+.boolean-value {
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.125rem 0.375rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.boolean-value.true {
+  background: color-mix(in srgb, #10b981 10%, transparent);
+  color: #10b981;
+  border: 1px solid color-mix(in srgb, #10b981 20%, transparent);
+}
+
+.boolean-value.false {
+  background: color-mix(in srgb, var(--destructive) 10%, transparent);
+  color: var(--destructive);
+  border: 1px solid color-mix(in srgb, var(--destructive) 20%, transparent);
+}
+
+.long-text {
+  cursor: help;
+}
+
+/* Empty state */
+.empty-row {
+  text-align: center;
+  padding: 2rem !important;
+  color: var(--muted-foreground);
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cell {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    max-width: 150px;
+  }
+
+  .selection-cell {
+    width: 32px;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .actions-cell {
+    width: 90px;
+  }
+
+  .actions {
+    opacity: 1; /* Always show actions on mobile */
+  }
+
+  .action-button {
+    width: 24px;
+    height: 24px;
+  }
+
+  .checkbox {
+    width: 14px;
+    height: 14px;
+  }
+
+  .boolean-value {
+    font-size: 0.6875rem;
+    padding: 0.0625rem 0.25rem;
+  }
+}

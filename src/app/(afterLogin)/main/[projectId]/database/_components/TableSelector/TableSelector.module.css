@@ -1,0 +1,125 @@
+/* Table Selector Container */
+.table-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Label */
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--foreground);
+}
+
+/* Select Container */
+.select-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  flex: 1;
+  appearance: none;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--muted);
+}
+
+.select-icon {
+  position: absolute;
+  right: 0.75rem;
+  pointer-events: none;
+  color: var(--muted-foreground);
+}
+
+/* Selected Table Info */
+.selected-info {
+  background: var(--muted);
+  border-radius: 6px;
+  padding: 1rem;
+  border-left: 3px solid var(--primary);
+}
+
+.table-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.table-name {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--foreground);
+}
+
+.table-description {
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Stats */
+.table-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.5rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.stat-label {
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+.stat-value {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+  }
+}
