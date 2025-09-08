@@ -97,7 +97,7 @@ export default function DatabaseStructure({
           ) : (
             <div className={cx("tables-list")}>
               {tables.map((table) => (
-                <TableItem key={table.id} table={table} />
+                <TableItem key={table.id} table={table} projectId={projectId} />
               ))}
             </div>
           )}

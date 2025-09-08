@@ -13,6 +13,7 @@ import Sheet from "@/app/_components/Sheet/Sheet";
 import { useColumnForm } from "@/hooks/columns/useColumnForm";
 import { ColumnData } from "@/types/column";
 
+import ForeignKeySelector from "../ForeignKeySelector/ForeignKeySelector";
 import styles from "./ColumnModal.module.css";
 
 const cx = classNames.bind(styles);
@@ -21,6 +22,7 @@ interface ColumnModalProps {
   isOpen: boolean;
   onClose: () => void;
   mode: "create" | "edit";
+  projectId: string;
   tableId: string;
   tableName: string;
   column?: ColumnData; // edit 모드일 때만 필요
@@ -32,6 +34,7 @@ export default function ColumnModal({
   isOpen,
   onClose,
   mode,
+  projectId,
   tableId,
   tableName,
   column,
@@ -47,6 +50,8 @@ export default function ColumnModal({
     dataTypes,
     handleFieldChange,
     handlePrimaryKeyChange,
+    handleForeignKeyChange,
+    handleForeignTableChange,
     handleSubmit,
     handleCancel,
     resetForm,
@@ -69,6 +74,11 @@ export default function ColumnModal({
   const title = isCreateMode ? "새 컬럼 추가" : "컬럼 편집";
   const submitText = isCreateMode ? "컬럼 생성" : "수정 완료";
   const loadingText = isCreateMode ? "생성중..." : "수정중...";
+
+  // ForeignKeySelector에서 사용할 필드 변경 핸들러 (타입 호환성을 위해)
+  const handleForeignKeyFieldChange = (field: string, value: string) => {
+    handleFieldChange(field as keyof typeof formData, value);
+  };
 
   return (
     <Sheet isOpen={isOpen} title={title} onClose={handleCancel}>
@@ -197,6 +207,26 @@ export default function ColumnModal({
                   </label>
                 </div>
               </div>
+
+              {/* Foreign Key Selector */}
+              <ForeignKeySelector
+                projectId={projectId}
+                currentTableId={tableId}
+                isForeignKey={formData.is_foreign_key || false}
+                foreignTableId={formData.foreign_table_id || ""}
+                foreignColumnId={formData.foreign_column_id || ""}
+                onDeleteAction={formData.on_delete_action || "CASCADE"}
+                onUpdateAction={formData.on_update_action || "CASCADE"}
+                constraintName={formData.foreign_key_constraint_name || ""}
+                onForeignKeyToggle={handleForeignKeyChange}
+                onForeignTableChange={handleForeignTableChange}
+                onFieldChange={handleForeignKeyFieldChange}
+                errors={{
+                  foreignTable: errors.foreignTable,
+                  foreignColumn: errors.foreignColumn,
+                }}
+                disabled={isLoading}
+              />
 
               <div className={cx("form-actions")}>
                 <Button

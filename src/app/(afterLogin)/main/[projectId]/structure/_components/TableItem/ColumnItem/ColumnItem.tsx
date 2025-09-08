@@ -1,7 +1,7 @@
 "use client";
 
 import classNames from "classnames/bind";
-import { Edit3, Key, MoreHorizontal, Trash2, Type } from "lucide-react";
+import { Edit3, ExternalLink, Key, MoreHorizontal, Trash2, Type } from "lucide-react";
 import { useState } from "react";
 
 import Button from "@/app/_components/Button/Button";
@@ -15,9 +15,10 @@ const cx = classNames.bind(styles);
 
 interface ColumnItemProps {
   column: ColumnData;
+  projectId: string;
 }
 
-export default function ColumnItem({ column }: ColumnItemProps) {
+export default function ColumnItem({ column, projectId }: ColumnItemProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
 
@@ -82,6 +83,12 @@ export default function ColumnItem({ column }: ColumnItemProps) {
                   PK
                 </span>
               )}
+              {column.is_foreign_key && (
+                <span className={cx("badge", "foreign-key")}>
+                  <ExternalLink size={10} />
+                  FK
+                </span>
+              )}
               {!column.is_nullable && (
                 <span className={cx("badge", "not-null")}>NOT NULL</span>
               )}
@@ -90,6 +97,12 @@ export default function ColumnItem({ column }: ColumnItemProps) {
 
           <div className={cx("column-meta")}>
             <span className={cx("data-type")}>{column.data_type}</span>
+            {column.is_foreign_key && column.foreign_table_name && column.foreign_column_name && (
+              <span className={cx("foreign-key-reference")}>
+                <ExternalLink size={12} />
+                {column.foreign_table_name}.{column.foreign_column_name}
+              </span>
+            )}
             {column.default_value && (
               <span className={cx("default-value")}>
                 default: {column.default_value}
@@ -165,6 +178,7 @@ export default function ColumnItem({ column }: ColumnItemProps) {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         mode="edit"
+        projectId={projectId}
         tableId={column.table_id}
         tableName=""
         column={column}

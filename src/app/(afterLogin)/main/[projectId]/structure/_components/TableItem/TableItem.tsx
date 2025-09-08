@@ -26,9 +26,10 @@ const cx = classNames.bind(styles);
 
 interface TableItemProps {
   table: TableData;
+  projectId: string;
 }
 
-export default function TableItem({ table }: TableItemProps) {
+export default function TableItem({ table, projectId }: TableItemProps) {
   // UI 상태만 여기서 관리 (expand는 순수 UI 상태)
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -157,7 +158,7 @@ export default function TableItem({ table }: TableItemProps) {
             ) : columns.length > 0 ? (
               <div className={cx("columns-list")}>
                 {columns.map((column) => (
-                  <ColumnItem key={column.id} column={column} />
+                  <ColumnItem key={column.id} column={column} projectId={projectId} />
                 ))}
               </div>
             ) : (
@@ -191,6 +192,7 @@ export default function TableItem({ table }: TableItemProps) {
         isOpen={addColumnSheet.isOpen}
         onClose={addColumnSheet.closeSheet}
         mode="create"
+        projectId={projectId}
         tableId={table.id}
         tableName={table.table_name}
       />
