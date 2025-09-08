@@ -1,7 +1,7 @@
 .layout {
   display: flex;
   height: 100vh;
-  background-color: hsl(var(--background));
+  background-color: var(--background);
 }
 
 .main {
@@ -9,5 +9,5 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: hsl(var(--muted) / 0.1);
+  background-color: color-mix(in srgb, var(--muted) 10%, transparent);
 }

@@ -1,7 +1,7 @@
 .container {
   height: 100vh;
   width: 100%;
-  background-color: hsl(var(--background));
+  background-color: var(--background);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -11,7 +11,7 @@
 .gradient-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom right, rgb(16 185 129 / 0.05), hsl(var(--background)), rgb(5 150 105 / 0.05));
+  background: linear-gradient(to bottom right, rgb(16 185 129 / 0.05), var(--background), rgb(5 150 105 / 0.05));
   z-index: 2;
 }
 
@@ -19,7 +19,7 @@
   position: relative;
   z-index: 10;
   width: 100%;
-  border-bottom: 1px solid hsl(var(--border) / 0.5);
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
   backdrop-filter: blur(4px);
   background-color: rgba(255, 255, 255, 0.95);
   flex-shrink: 0;
@@ -70,12 +70,12 @@
 
 .nav-link {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   transition: color 0.2s;
 }
 
 .nav-link:hover {
-  color: hsl(var(--foreground));
+  color: var(--foreground);
 }
 
 .main-content {

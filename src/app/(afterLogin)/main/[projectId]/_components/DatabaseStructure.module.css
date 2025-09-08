@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: hsl(var(--background));
+  background: var(--background);
   overflow: hidden;
 }
 
@@ -13,8 +13,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem;
-  border-bottom: 1px solid hsl(var(--border));
-  background: hsl(var(--card));
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -35,11 +35,11 @@
   border-radius: 12px;
   background: linear-gradient(
     135deg,
-    hsl(var(--primary) / 0.1) 0%,
-    hsl(var(--primary) / 0.05) 100%
+    color-mix(in srgb, var(--primary) 10%, transparent) 0%,
+    color-mix(in srgb, var(--primary) 5%, transparent) 100%
   );
-  color: hsl(var(--primary));
-  border: 1px solid hsl(var(--primary) / 0.2);
+  color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .project-details {
@@ -53,14 +53,14 @@
 .project-name {
   font-size: 1.25rem;
   font-weight: 700;
-  color: hsl(var(--foreground));
+  color: var(--foreground);
   margin: 0;
   line-height: 1.2;
 }
 
 .project-description {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   margin: 0;
   line-height: 1.4;
   overflow: hidden;
@@ -86,7 +86,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem 0.75rem;
-  background: hsl(var(--background));
+  background: var(--background);
 }
 
 .section-info {
@@ -96,13 +96,13 @@
 }
 
 .section-icon {
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
 }
 
 .section-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: hsl(var(--foreground));
+  color: var(--foreground);
   margin: 0;
 }
 
@@ -128,26 +128,26 @@
   gap: 1rem;
   text-align: center;
   padding: 2rem;
-  border: 2px dashed hsl(var(--border));
+  border: 2px dashed var(--border);
   border-radius: 12px;
-  background: hsl(var(--muted) / 0.05);
+  background: color-mix(in srgb, var(--muted) 5%, transparent);
 }
 
 .empty-icon {
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   opacity: 0.6;
 }
 
 .empty-title {
   font-size: 1rem;
   font-weight: 600;
-  color: hsl(var(--foreground));
+  color: var(--foreground);
   margin: 0;
 }
 
 .empty-description {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   line-height: 1.5;
   margin: 0;
   max-width: 400px;
@@ -164,7 +164,7 @@
 }
 
 .loading-icon {
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   animation: spin 1s linear infinite;
 }
 
@@ -176,7 +176,7 @@
 
 .loading-text {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
 }
 
 /* Error State */
@@ -191,26 +191,26 @@
 }
 
 .error-icon {
-  color: hsl(var(--destructive));
+  color: var(--destructive);
 }
 
 .error-text {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
 }
 
 .retry-button {
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  border: 1px solid hsl(var(--border));
-  background: hsl(var(--card));
-  color: hsl(var(--foreground));
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 }
 
 .retry-button:hover {
-  background: hsl(var(--accent));
-  border-color: hsl(var(--accent-foreground) / 0.2);
+  background: var(--accent);
+  border-color: color-mix(in srgb, var(--accent-foreground) 20%, transparent);
 }

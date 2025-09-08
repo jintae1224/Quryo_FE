@@ -25,9 +25,9 @@
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  background: hsl(var(--destructive) / 0.1);
-  border: 1px solid hsl(var(--destructive) / 0.2);
-  color: hsl(var(--destructive));
+  background: color-mix(in srgb, var(--destructive) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--destructive) 20%, transparent);
+  color: var(--destructive);
   font-size: 0.875rem;
   font-weight: 500;
 }
@@ -37,7 +37,7 @@
   justify-content: flex-end;
   gap: 0.75rem;
   padding-top: 1rem;
-  border-top: 1px solid hsl(var(--border));
+  border-top: 1px solid var(--border);
 }
 
 .spinner {
@@ -90,13 +90,13 @@
 .success-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: hsl(var(--foreground));
+  color: var(--foreground);
   margin: 0;
 }
 
 .success-message {
   font-size: 1rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   line-height: 1.5;
   margin: 0;
   max-width: 400px;
