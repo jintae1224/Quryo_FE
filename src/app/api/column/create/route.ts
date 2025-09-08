@@ -83,12 +83,23 @@ export async function POST(request: NextRequest) {
         );
       }
 
+      // 기존 컬럼 중 최대 order 값 조회
+      const { data: maxOrderResult } = await supabase
+        .from("table_columns")
+        .select("column_order")
+        .eq("table_id", bulkRequest.table_id)
+        .order("column_order", { ascending: false })
+        .limit(1)
+        .single();
+
+      const startOrder = (maxOrderResult?.column_order ?? 0) + 1;
+
       // 컬럼 데이터 준비
       const columnsToInsert = bulkRequest.columns.map((col, index) => ({
         table_id: bulkRequest.table_id,
         column_name: col.column_name.trim(),
         data_type: col.data_type,
-        column_order: col.column_order ?? index,
+        column_order: col.column_order ?? (startOrder + index),
         description: col.description?.trim() || null,
         is_nullable: col.is_nullable ?? true,
         is_primary_key: col.is_primary_key ?? false,
@@ -195,6 +206,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // 기존 컬럼 중 최대 order 값 조회
+    const { data: maxOrderResult } = await supabase
+      .from("table_columns")
+      .select("column_order")
+      .eq("table_id", columnRequest.table_id)
+      .order("column_order", { ascending: false })
+      .limit(1)
+      .single();
+
+    const nextOrder = columnRequest.column_order ?? ((maxOrderResult?.column_order ?? 0) + 1);
+
     // 컬럼 생성
     const { data: column, error } = await supabase
       .from("table_columns")
@@ -202,7 +224,7 @@ export async function POST(request: NextRequest) {
         table_id: columnRequest.table_id,
         column_name: columnRequest.column_name.trim(),
         data_type: columnRequest.data_type,
-        column_order: columnRequest.column_order ?? 0,
+        column_order: nextOrder,
         description: columnRequest.description?.trim() || null,
         is_nullable: columnRequest.is_nullable ?? true,
         is_primary_key: columnRequest.is_primary_key ?? false,

@@ -25,6 +25,7 @@ export const useCreateColumn = () => {
       );
       return response!;
     },
+    retry: false, // 무한 재시도 방지
     onSuccess: (_, variables) => {
       // 테이블의 컬럼 목록 캐시 무효화
       const tableId = 'columns' in variables 
@@ -34,6 +35,9 @@ export const useCreateColumn = () => {
       queryClient.invalidateQueries({ 
         queryKey: columnKeys.list(tableId) 
       });
+    },
+    onError: (error) => {
+      console.error("컬럼 생성 실패:", error);
     },
   });
 };
