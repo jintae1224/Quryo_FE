@@ -54,7 +54,14 @@ export async function PUT(request: NextRequest) {
       body.description !== undefined ||
       body.is_nullable !== undefined ||
       body.is_primary_key !== undefined ||
-      body.default_value !== undefined;
+      body.default_value !== undefined ||
+      // Foreign Key fields
+      body.is_foreign_key !== undefined ||
+      body.foreign_table_id !== undefined ||
+      body.foreign_column_id !== undefined ||
+      body.foreign_key_constraint_name !== undefined ||
+      body.on_delete_action !== undefined ||
+      body.on_update_action !== undefined;
 
     if (!hasUpdate) {
       return NextResponse.json(
@@ -93,7 +100,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // 컬럼 업데이트
+    // 컬럼 기본 정보 업데이트 (Foreign Key 필드 제외)
     const updateData: Record<string, unknown> = {};
     if (body.column_name?.trim()) {
       updateData.column_name = body.column_name.trim();
@@ -147,6 +154,61 @@ export async function PUT(request: NextRequest) {
         } as ApiResponse,
         { status: 500 }
       );
+    }
+
+    // Foreign Key 관계 업데이트 처리
+    const hasForeignKeyUpdates = 
+      body.is_foreign_key !== undefined ||
+      body.foreign_table_id !== undefined ||
+      body.foreign_column_id !== undefined ||
+      body.foreign_key_constraint_name !== undefined ||
+      body.on_delete_action !== undefined ||
+      body.on_update_action !== undefined;
+
+    if (hasForeignKeyUpdates) {
+      // 기존 Foreign Key 관계 조회
+      const { data: existingFk } = await supabase
+        .from("foreign_key_relationships")
+        .select("*")
+        .eq("source_column_id", columnId)
+        .single();
+
+      if (body.is_foreign_key === false || (body.is_foreign_key === undefined && !body.foreign_table_id && !body.foreign_column_id)) {
+        // Foreign Key 해제
+        if (existingFk) {
+          await supabase
+            .from("foreign_key_relationships")
+            .delete()
+            .eq("source_column_id", columnId);
+        }
+      } else if (body.is_foreign_key && body.foreign_table_id && body.foreign_column_id) {
+        // Foreign Key 설정/업데이트
+        const fkData = {
+          source_column_id: columnId,
+          target_table_id: body.foreign_table_id,
+          target_column_id: body.foreign_column_id,
+          constraint_name: body.foreign_key_constraint_name?.trim() || null,
+          on_delete: body.on_delete_action || "CASCADE",
+          on_update: body.on_update_action || "CASCADE",
+          updated_at: new Date().toISOString(),
+        };
+
+        if (existingFk) {
+          // 업데이트
+          await supabase
+            .from("foreign_key_relationships")
+            .update(fkData)
+            .eq("source_column_id", columnId);
+        } else {
+          // 새로 생성
+          await supabase
+            .from("foreign_key_relationships")
+            .insert({
+              ...fkData,
+              source_table_id: column.table_id,
+            });
+        }
+      }
     }
 
     return NextResponse.json(

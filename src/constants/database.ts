@@ -1,4 +1,4 @@
-import { ColumnRequest } from "@/types/column";
+import { ColumnRequest, ForeignKeyAction } from "@/types/column";
 import { DatabaseType } from "@/types/database";
 import { TableRequest } from "@/types/table";
 
@@ -67,6 +67,13 @@ export const INITIAL_COLUMN_FORM_DATA: Omit<ColumnRequest, 'table_id'> = {
   default_value: "",
   is_nullable: true,
   is_primary_key: false,
+  // Foreign Key fields
+  is_foreign_key: false,
+  foreign_table_id: "",
+  foreign_column_id: "",
+  foreign_key_constraint_name: "",
+  on_delete_action: "CASCADE" as ForeignKeyAction,
+  on_update_action: "CASCADE" as ForeignKeyAction,
 };
 
 // 초기 테이블 폼 데이터
