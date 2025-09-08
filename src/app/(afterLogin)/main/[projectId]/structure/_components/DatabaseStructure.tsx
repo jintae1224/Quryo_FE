@@ -1,11 +1,10 @@
 "use client";
 
 import classNames from "classnames/bind";
-import { AlertCircle, Database, Loader2, Plus, Table } from "lucide-react";
+import { AlertCircle, Loader2, Plus, Table } from "lucide-react";
 import { useState } from "react";
 
 import Button from "@/app/_components/Button/Button";
-import { useProjectDetail } from "@/hooks/projects/useProjectDetail";
 import { useTableList } from "@/hooks/tables/useTableList";
 
 import styles from "./DatabaseStructure.module.css";
@@ -24,19 +23,13 @@ export default function DatabaseStructure({
   const [isAddTableModalOpen, setIsAddTableModalOpen] = useState(false);
 
   const {
-    data: project,
-    isLoading: projectLoading,
-    error: projectError,
-  } = useProjectDetail(projectId);
-
-  const {
     data: tables = [],
     isLoading: tablesLoading,
     error: tablesError,
     refetch: refetchTables,
   } = useTableList(projectId);
 
-  if (projectLoading || tablesLoading) {
+  if (tablesLoading) {
     return (
       <div className={cx("loading-state")}>
         <Loader2 className={cx("loading-icon")} size={20} />
@@ -47,8 +40,8 @@ export default function DatabaseStructure({
     );
   }
 
-  if (projectError || tablesError) {
-    const error = projectError || tablesError;
+  if (tablesError) {
+    const error = tablesError;
     return (
       <div className={cx("error-state")}>
         <AlertCircle className={cx("error-icon")} size={20} />
@@ -62,48 +55,25 @@ export default function DatabaseStructure({
     );
   }
 
-  if (!project) {
-    return (
-      <div className={cx("error-state")}>
-        <AlertCircle className={cx("error-icon")} size={20} />
-        <span className={cx("error-text")}>프로젝트를 찾을 수 없습니다</span>
-      </div>
-    );
-  }
 
   return (
     <div className={cx("database-structure")}>
-      {/* Project Header */}
-      <div className={cx("project-header")}>
-        <div className={cx("project-info")}>
-          <div className={cx("project-icon")}>
-            <Database size={20} />
-          </div>
-          <div className={cx("project-details")}>
-            <h2 className={cx("project-name")}>{project.project_name}</h2>
-            {project.description && (
-              <p className={cx("project-description")}>{project.description}</p>
-            )}
-          </div>
-        </div>
-        <div className={cx("project-actions")}>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsAddTableModalOpen(true)}
-          >
-            <Plus size={16} />
-            테이블 추가
-          </Button>
-        </div>
-      </div>
-
       {/* Tables Section */}
       <div className={cx("tables-section")}>
         <div className={cx("section-header")}>
           <div className={cx("section-info")}>
             <Table className={cx("section-icon")} size={16} />
             <h3 className={cx("section-title")}>Tables ({tables.length})</h3>
+          </div>
+          <div className={cx("section-actions")}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsAddTableModalOpen(true)}
+            >
+              <Plus size={16} />
+              테이블 추가
+            </Button>
           </div>
         </div>
 

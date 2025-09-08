@@ -67,7 +67,7 @@ export default function ProjectList() {
       {projects.map((project) => (
         <Link
           key={project.id}
-          href={`/main/${project.id}`}
+          href={`/main/${project.id}/structure`}
           className={cx("project-item")}
         >
           <div className={cx("project-main")}>
