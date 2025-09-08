@@ -14,7 +14,7 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid hsl(var(--ring));
+  outline: 2px solid #6b7280;
   outline-offset: 2px;
 }
 
@@ -43,17 +43,11 @@
 }
 
 .outline {
-  border: 2px solid hsl(var(--primary));
+  border: 1px solid #6b7280;
   background-color: transparent;
-  color: hsl(var(--primary));
+  color: #374151;
 }
 
-.outline:hover:not(:disabled) {
-  background-color: hsl(var(--primary));
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
-}
 
 .google {
   background: white;

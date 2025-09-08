@@ -231,51 +231,7 @@ export default function ColumnModal({
           </CardContent>
         </Card>
 
-        {isCreateMode ? (
-          // Create 모드: 도움말 표시
-          <Card>
-            <CardHeader>
-              <CardTitle>컬럼 생성 팁</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className={cx("info-content")}>
-                <div className={cx("tip-item")}>
-                  <h4>📝 데이터 타입 선택</h4>
-                  <ul className={cx("tip-list")}>
-                    <li>
-                      <strong>VARCHAR(255):</strong> 짧은 문자열 (이름, 이메일
-                      등)
-                    </li>
-                    <li>
-                      <strong>TEXT:</strong> 긴 문자열 (설명, 내용 등)
-                    </li>
-                    <li>
-                      <strong>INT:</strong> 정수형 숫자
-                    </li>
-                    <li>
-                      <strong>DATETIME:</strong> 날짜와 시간
-                    </li>
-                    <li>
-                      <strong>BOOLEAN:</strong> 참/거짓 값
-                    </li>
-                  </ul>
-                </div>
-                <div className={cx("tip-item")}>
-                  <h4>🔑 제약조건 가이드</h4>
-                  <ul className={cx("tip-list")}>
-                    <li>
-                      <strong>Primary Key:</strong> 테이블의 고유 식별자
-                      (자동으로 NOT NULL)
-                    </li>
-                    <li>
-                      <strong>NOT NULL:</strong> 빈 값을 허용하지 않음
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
+        {!isCreateMode && (
           // Edit 모드: 컬럼 메타정보 표시
           column && (
             <Card>

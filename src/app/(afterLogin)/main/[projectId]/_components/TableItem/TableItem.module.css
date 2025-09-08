@@ -1,20 +1,20 @@
 /* Table Item Container */
 .table-item {
   border-radius: 8px;
-  border: 1px solid hsl(var(--border));
-  background: hsl(var(--card));
+  border: 1px solid var(--border);
+  background: var(--card);
   transition: all 0.2s ease-in-out;
   overflow: hidden;
 }
 
 .table-item:hover {
-  border-color: hsl(var(--border) / 0.8);
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .table-item.expanded {
-  border-color: hsl(var(--primary) / 0.3);
-  background: hsl(var(--card));
+  border-color: color-mix(in srgb, var(--primary) 30%, transparent);
+  background: var(--card);
 }
 
 /* Table Header */
@@ -41,12 +41,12 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   transition: transform 0.2s ease-in-out;
 }
 
 .expand-icon:hover {
-  color: hsl(var(--foreground));
+  color: var(--foreground);
 }
 
 .no-expand {
@@ -63,20 +63,20 @@
   border-radius: 6px;
   background: linear-gradient(
     135deg,
-    hsl(var(--accent)) 0%,
-    hsl(var(--accent) / 0.7) 100%
+    var(--accent) 0%,
+    color-mix(in srgb, var(--accent) 70%, transparent) 100%
   );
-  color: hsl(var(--accent-foreground));
+  color: var(--accent-foreground);
   flex-shrink: 0;
 }
 
 .table-item.expanded .table-icon {
   background: linear-gradient(
     135deg,
-    hsl(var(--primary) / 0.15) 0%,
-    hsl(var(--primary) / 0.05) 100%
+    color-mix(in srgb, var(--primary) 15%, transparent) 0%,
+    color-mix(in srgb, var(--primary) 5%, transparent) 100%
   );
-  color: hsl(var(--primary));
+  color: var(--primary);
 }
 
 .table-info {
@@ -90,7 +90,7 @@
 .table-name {
   font-size: 0.875rem;
   font-weight: 600;
-  color: hsl(var(--foreground));
+  color: var(--foreground);
   line-height: 1.2;
 }
 
@@ -106,12 +106,12 @@
   align-items: center;
   gap: 0.25rem;
   font-size: 0.75rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
 }
 
 .table-description {
   font-size: 0.75rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -150,8 +150,8 @@
   margin-top: 0.25rem;
   padding: 0.75rem;
   border-radius: 8px;
-  border: 1px solid hsl(var(--border));
-  background: hsl(var(--card));
+  border: 1px solid var(--border);
+  background: var(--card);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 10;
   min-width: 200px;
@@ -164,14 +164,14 @@
 .dropdown-header span {
   font-size: 0.875rem;
   font-weight: 600;
-  color: hsl(var(--foreground));
+  color: var(--foreground);
   display: block;
   margin-bottom: 0.25rem;
 }
 
 .dropdown-header p {
   font-size: 0.75rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   margin: 0;
 }
 
@@ -183,8 +183,8 @@
 
 /* Table Content (Expanded) */
 .table-content {
-  border-top: 1px solid hsl(var(--border));
-  background: hsl(var(--muted) / 0.02);
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--muted) 2%, transparent);
   padding: 0;
 }
 
@@ -202,7 +202,7 @@
 .columns-title {
   font-size: 0.75rem;
   font-weight: 600;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -223,7 +223,7 @@
   padding: 1rem;
   text-align: center;
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
 }
 
 .columns-empty {
@@ -233,19 +233,19 @@
   gap: 0.75rem;
   padding: 2rem;
   text-align: center;
-  border: 1px dashed hsl(var(--border));
+  border: 1px dashed var(--border);
   border-radius: 6px;
-  background: hsl(var(--muted) / 0.05);
+  background: color-mix(in srgb, var(--muted) 5%, transparent);
 }
 
 .columns-empty .empty-icon {
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
   opacity: 0.6;
 }
 
 .columns-empty span {
   font-size: 0.875rem;
-  color: hsl(var(--muted-foreground));
+  color: var(--muted-foreground);
 }
 
 /* Responsive */
