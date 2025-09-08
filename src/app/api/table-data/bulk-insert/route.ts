@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
     
     // Validate data if requested
     const errors: Array<{ row_index: number; errors: TableDataValidationError[] }> = [];
-    const validRows: Array<{ row_data: Record<string, any>; row_index: number }> = [];
+    const validRows: Array<{ row_data: Record<string, unknown>; row_index: number }> = [];
 
     for (let i = 0; i < body.rows.length; i++) {
       const rowData = body.rows[i];
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
           const value = rowData[col.column_name];
           if (value !== null && value !== undefined && value !== "") {
             // Simple type validation based on data_type
-            if (col.data_type.includes("integer") && isNaN(parseInt(value))) {
+            if (col.data_type.includes("integer") && isNaN(parseInt(String(value)))) {
               rowErrors.push({
                 column_name: col.column_name,
                 error_type: "type_mismatch",
@@ -184,7 +184,7 @@ export async function POST(request: NextRequest) {
       .limit(1)
       .single();
     
-    let startingOrder = (maxOrderData?.row_order || 0) + 1;
+    const startingOrder = (maxOrderData?.row_order || 0) + 1;
 
     // Prepare data for insertion
     const insertData = validRows.map((item, index) => ({
@@ -195,7 +195,7 @@ export async function POST(request: NextRequest) {
       updated_by: user.email,
     }));
 
-    let insertedIds: string[] = [];
+    const insertedIds: string[] = [];
     let successCount = 0;
 
     if (insertData.length > 0) {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { ApiResponse } from "@/types/api";
-import { TableRowData, TableDataRequest } from "@/types/tableData";
+import { TableDataRequest, TableRowData } from "@/types/tableData";
 import { createClient } from "@/utils/supabase/server";
 
 /**

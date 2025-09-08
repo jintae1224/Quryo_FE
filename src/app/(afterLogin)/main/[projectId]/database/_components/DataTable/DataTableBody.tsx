@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import classNames from "classnames/bind";
-import { Edit, Trash2, MoreHorizontal } from "lucide-react";
+import { Edit, MoreHorizontal, Trash2 } from "lucide-react";
+import { useState } from "react";
 
-import { ColumnData } from "@/types/column";
-import { TableRowData, RowDataValue } from "@/types/tableData";
 import { useDeleteTableData } from "@/hooks/tableData/useDeleteTableData";
+import { ColumnData } from "@/types/column";
+import { RowDataValue, TableRowData } from "@/types/tableData";
 
 import styles from "./DataTableBody.module.css";
 
@@ -18,7 +18,7 @@ interface DataTableBodyProps {
   tableId: string;
 }
 
-export function DataTableBody({ columns, rows, tableId }: DataTableBodyProps) {
+export function DataTableBody({ columns, rows, tableId: _tableId }: DataTableBodyProps) {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
   
@@ -34,13 +34,13 @@ export function DataTableBody({ columns, rows, tableId }: DataTableBodyProps) {
     setSelectedRows(newSelected);
   };
 
-  const handleSelectAll = () => {
-    if (selectedRows.size === rows.length) {
-      setSelectedRows(new Set());
-    } else {
-      setSelectedRows(new Set(rows.map(row => row.id)));
-    }
-  };
+  // const handleSelectAll = () => {
+  //   if (selectedRows.size === rows.length) {
+  //     setSelectedRows(new Set());
+  //   } else {
+  //     setSelectedRows(new Set(rows.map(row => row.id)));
+  //   }
+  // };
 
   const handleDeleteRow = async (row: TableRowData) => {
     if (confirm(`이 행을 삭제하시겠습니까?`)) {

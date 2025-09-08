@@ -1,19 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import classNames from "classnames/bind";
-import { Plus, Search, RefreshCw, Download, Upload } from "lucide-react";
+import { Download, Plus, RefreshCw, Search, Upload } from "lucide-react";
+import { useState } from "react";
 
-import { useTableDataList } from "@/hooks/tableData/useTableDataList";
 import { useColumnList } from "@/hooks/columns/useColumnList";
-import { TableDataListParams } from "@/types/tableData";
-import { DataTableHeader } from "./DataTableHeader";
-import { DataTableBody } from "./DataTableBody";
-import { DataTablePagination } from "./DataTablePagination";
-import { DataFormSheet } from "../DataFormSheet/DataFormSheet";
+import { useTableDataList } from "@/hooks/tableData/useTableDataList";
 import { useSheet } from "@/hooks/utils/useSheet";
+import { TableDataListParams } from "@/types/tableData";
 
+import { DataFormSheet } from "../DataFormSheet/DataFormSheet";
 import styles from "./DataTable.module.css";
+import { DataTableBody } from "./DataTableBody";
+import { DataTableHeader } from "./DataTableHeader";
+import { DataTablePagination } from "./DataTablePagination";
 
 const cx = classNames.bind(styles);
 
@@ -22,13 +22,13 @@ interface DataTableProps {
   projectId: string;
 }
 
-export function DataTable({ tableId, projectId }: DataTableProps) {
+export function DataTable({ tableId, projectId: _projectId }: DataTableProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("created_at");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-  const { isOpen: isSheetOpen, sheetRef, openSheet, closeSheet, onClose } = useSheet();
+  const { isOpen: isSheetOpen, sheetRef, openSheet, closeSheet } = useSheet();
 
   // Table data query parameters
   const listParams: TableDataListParams = {

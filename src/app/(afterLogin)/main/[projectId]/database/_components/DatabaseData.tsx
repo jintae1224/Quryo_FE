@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import classNames from "classnames/bind";
+import { useState } from "react";
 
 import { useTableList } from "@/hooks/tables/useTableList";
-import { TableSelector } from "./TableSelector/TableSelector";
-import { DataTable } from "./DataTable/DataTable";
 
 import styles from "./DatabaseData.module.css";
+import { DataTable } from "./DataTable/DataTable";
+import { TableSelector } from "./TableSelector/TableSelector";
 
 const cx = classNames.bind(styles);
 
@@ -17,18 +17,12 @@ interface DatabaseDataProps {
 
 export default function DatabaseData({ projectId }: DatabaseDataProps) {
   const [selectedTableId, setSelectedTableId] = useState<string>("");
-  
-  const { data: tables = [], isLoading: tablesLoading } = useTableList(projectId);
+
+  const { data: tables = [], isLoading: tablesLoading } =
+    useTableList(projectId);
 
   return (
     <div className={cx("database-data")}>
-      {/* Header */}
-      <div className={cx("header")}>
-        <div className={cx("title-section")}>
-          <h1 className={cx("title")}>데이터베이스</h1>
-        </div>
-      </div>
-
       {/* Table Selector */}
       <div className={cx("selector-section")}>
         <TableSelector
@@ -42,10 +36,7 @@ export default function DatabaseData({ projectId }: DatabaseDataProps) {
       {/* Data Table */}
       {selectedTableId && (
         <div className={cx("data-section")}>
-          <DataTable
-            tableId={selectedTableId}
-            projectId={projectId}
-          />
+          <DataTable tableId={selectedTableId} projectId={projectId} />
         </div>
       )}
 

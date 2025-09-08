@@ -121,7 +121,7 @@ export async function GET(request: NextRequest) {
     const stats: TableDataStats = {
       table_id: tableId,
       table_name: tableInfo.table_name,
-      project_name: tableInfo.database_projects.project_name,
+      project_name: (tableInfo.database_projects as { project_name: string; user_email: string }[])[0]?.project_name || '',
       total_rows: totalRows,
       first_record_at: firstRecordAt,
       last_updated_at: lastUpdatedAt,

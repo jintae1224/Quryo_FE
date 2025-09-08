@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { ApiResponse } from "@/types/api";
-import { TableDataListResponse, TableDataListParams } from "@/types/tableData";
+import { TableDataListResponse } from "@/types/tableData";
 import { createClient } from "@/utils/supabase/server";
 
 /**
@@ -12,12 +12,13 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
     const searchParams = request.nextUrl.searchParams;
-    
+
     const tableId = searchParams.get("table_id");
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "20");
     const sortBy = searchParams.get("sort_by") || "created_at";
-    const sortOrder = (searchParams.get("sort_order") as "asc" | "desc") || "desc";
+    const sortOrder =
+      (searchParams.get("sort_order") as "asc" | "desc") || "desc";
     const search = searchParams.get("search") || "";
 
     if (!tableId) {
@@ -51,12 +52,14 @@ export async function GET(request: NextRequest) {
     // 테이블 소유권 확인 (through project ownership)
     const { data: table, error: tableError } = await supabase
       .from("database_tables")
-      .select(`
+      .select(
+        `
         id,
         table_name,
         project_id,
         database_projects!inner(user_email)
-      `)
+      `
+      )
       .eq("id", tableId)
       .eq("database_projects.user_email", user.email)
       .single();
@@ -88,11 +91,17 @@ export async function GET(request: NextRequest) {
     }
 
     // Add sorting
-    if (sortBy === "created_at" || sortBy === "updated_at" || sortBy === "row_order") {
+    if (
+      sortBy === "created_at" ||
+      sortBy === "updated_at" ||
+      sortBy === "row_order"
+    ) {
       query = query.order(sortBy, { ascending: sortOrder === "asc" });
     } else {
       // For custom column sorting, we'll sort by JSONB field
-      query = query.order(`row_data->${sortBy}`, { ascending: sortOrder === "asc" });
+      query = query.order(`row_data->${sortBy}`, {
+        ascending: sortOrder === "asc",
+      });
     }
 
     // Add pagination

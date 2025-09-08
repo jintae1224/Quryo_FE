@@ -17,7 +17,7 @@ const cx = classNames.bind(styles);
 interface DataFormSheetProps {
   isOpen: boolean;
   onClose: () => void;
-  sheetRef: React.RefObject<SheetRef>;
+  sheetRef: React.RefObject<SheetRef | null>;
   tableId: string;
   columns: ColumnData[];
   initialData?: RowData;

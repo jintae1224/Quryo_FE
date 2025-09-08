@@ -1,10 +1,10 @@
 "use client";
 
-import { ChevronDown, Database, Table } from "lucide-react";
 import classNames from "classnames/bind";
+import { ChevronDown, Database, Table } from "lucide-react";
 
-import { TableData } from "@/types/table";
 import { useTableDataStats } from "@/hooks/tableData/useTableDataStats";
+import { TableData } from "@/types/table";
 
 import styles from "./TableSelector.module.css";
 

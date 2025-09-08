@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { ApiResponse } from "@/types/api";
-import { TableRowData, TableDataUpdateRequest } from "@/types/tableData";
+import { TableDataUpdateRequest, TableRowData } from "@/types/tableData";
 import { createClient } from "@/utils/supabase/server";
 
 /**
@@ -95,7 +95,15 @@ export async function PUT(request: NextRequest) {
     }
 
     // 기본 검증: 필수 컬럼 확인
-    const tableInfo = existingRow.database_tables;
+    const tableInfo = existingRow.database_tables as unknown as {
+      table_columns: Array<{
+        column_name: string;
+        data_type: string;
+        is_nullable: boolean;
+        is_primary_key: boolean;
+        default_value: string | null;
+      }>;
+    };
     const columns = tableInfo.table_columns || [];
     const requiredColumns = columns.filter(col => !col.is_nullable && !col.default_value);
     
@@ -114,7 +122,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Prepare update data
-    const updateData: any = {
+    const updateData: Record<string, unknown> = {
       row_data: body.row_data,
       updated_by: user.email,
     };

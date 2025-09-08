@@ -1,7 +1,7 @@
 "use client";
 
 import classNames from "classnames/bind";
-import { ChevronUp, ChevronDown, Key, Link } from "lucide-react";
+import { ChevronDown, ChevronUp, Key, Link } from "lucide-react";
 
 import { ColumnData } from "@/types/column";
 
