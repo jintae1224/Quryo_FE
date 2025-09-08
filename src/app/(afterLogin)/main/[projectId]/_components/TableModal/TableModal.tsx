@@ -147,27 +147,7 @@ export default function TableModal({
           </CardContent>
         </Card>
 
-        {isCreateMode ? (
-          // Create 모드: 다음 단계 안내
-          <Card>
-            <CardHeader>
-              <CardTitle>다음 단계</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className={cx("info-content")}>
-                <p className={cx("info-text")}>
-                  테이블을 생성한 후에는 컬럼을 추가하여 데이터 구조를 정의할 수
-                  있습니다.
-                </p>
-                <ul className={cx("info-list")}>
-                  <li>컬럼명과 데이터 타입 지정</li>
-                  <li>Primary Key, Not Null 등 제약조건 설정</li>
-                  <li>기본값 및 설명 추가</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-        ) : (
+        {!isCreateMode && (
           // Edit 모드: 테이블 메타정보 표시
           table && (
             <Card>
