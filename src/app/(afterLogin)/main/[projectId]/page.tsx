@@ -1,4 +1,4 @@
-import DatabaseStructure from "./_components/DatabaseStructure";
+import { redirect } from "next/navigation";
 
 interface ProjectPageProps {
   params: {
@@ -7,5 +7,6 @@ interface ProjectPageProps {
 }
 
 export default function ProjectPage({ params }: ProjectPageProps) {
-  return <DatabaseStructure projectId={params.projectId} />;
+  // 기본적으로 structure 탭으로 리다이렉트
+  redirect(`/main/${params.projectId}/structure`);
 }
