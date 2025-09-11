@@ -1,0 +1,31 @@
+.sql-editor {
+  width: 100%;
+  height: 100vh;
+  background: var(--background-secondary);
+  padding: 24px 24px 150px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-layout {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sql-editor {
+    padding: 16px;
+  }
+}
