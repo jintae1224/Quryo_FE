@@ -24,3 +24,21 @@ export const handleEnterKeyExecution = ({
     }
   }
 };
+
+interface HandleSimpleEnterParams {
+  e: KeyboardEvent<HTMLTextAreaElement>;
+  onExecute: () => void;
+}
+
+export const handleSimpleEnter = ({ e, onExecute }: HandleSimpleEnterParams) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    onExecute();
+  }
+};
+
+export const handleKeyDown = (onExecute: () => void) => {
+  return (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    handleSimpleEnter({ e, onExecute });
+  };
+};
