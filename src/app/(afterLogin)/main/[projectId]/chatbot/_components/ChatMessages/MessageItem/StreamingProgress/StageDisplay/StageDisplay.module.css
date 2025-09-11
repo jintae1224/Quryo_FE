@@ -1,0 +1,218 @@
+.stage-data {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.stage-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Table Selection Styles */
+.table-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.table-item {
+  padding: 1rem;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.table-name {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.table-description {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Column Selection Styles */
+.column-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.column-item {
+  padding: 0.75rem;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.column-name {
+  font-weight: 600;
+  color: var(--foreground);
+  font-family: monospace;
+}
+
+.data-type {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--muted);
+  border-radius: 4px;
+  color: var(--muted-foreground);
+  font-family: monospace;
+}
+
+.column-description {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Foreign Key Styles */
+.fk-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fk-item {
+  padding: 0.75rem;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.fk-relationship {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.fk-from,
+.fk-to {
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.fk-arrow {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.no-relationships {
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  font-style: italic;
+  margin: 0;
+}
+
+/* SQL Generation Styles */
+.sql-container {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.sql-query {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: var(--foreground);
+  margin: 0;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.sql-explanation {
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.sql-metadata,
+.final-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.warnings-label {
+  font-weight: 600;
+  color: orange;
+}
+
+.warning-item {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+  padding: 0.5rem;
+  background-color: rgba(255, 165, 0, 0.1);
+  border-radius: 4px;
+  border-left: 3px solid orange;
+}
+
+/* Common Styles */
+.confidence {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.complexity,
+.processing-time {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.metadata {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
