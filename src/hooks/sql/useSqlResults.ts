@@ -9,6 +9,22 @@ interface UseSqlResultsParams {
   result: SqlQueryResponse | null | undefined;
 }
 
+const formatCellValue = (value: unknown): string => {
+  if (value === null || value === undefined) {
+    return 'NULL';
+  }
+
+  if (typeof value === 'object') {
+    return JSON.stringify(value);
+  }
+
+  if (typeof value === 'boolean') {
+    return value ? 'true' : 'false';
+  }
+
+  return String(value);
+};
+
 export function useSqlResults({ result }: UseSqlResultsParams) {
   const { data, executionTime, hasData } = useMemo(() => {
     if (!result) {
@@ -45,5 +61,6 @@ export function useSqlResults({ result }: UseSqlResultsParams) {
     hasData,
     handleDownloadCSV,
     handleDownloadJSON,
+    formatCellValue,
   };
 }
