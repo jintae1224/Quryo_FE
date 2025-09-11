@@ -1,0 +1,53 @@
+.streaming-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.streaming-progress.completed {
+  background-color: var(--muted);
+  border-radius: 12px;
+  padding: 1rem;
+  border: 1px solid var(--border);
+}
+
+.progress-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.stage-info {
+  flex: 1;
+}
+
+.stage-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0 0 0.25rem 0;
+}
+
+.stage-message {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.progress-percentage {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  padding: 0.2rem 0.6rem;
+  background-color: var(--primary-foreground);
+  border-radius: 12px;
+  border: 1px solid var(--primary);
+}
+
+.progress-percentage.completed {
+  color: var(--muted-foreground);
+  background-color: var(--background);
+  border: 1px solid var(--border);
+}
