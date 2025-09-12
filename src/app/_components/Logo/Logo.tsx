@@ -13,7 +13,7 @@ interface LogoProps {
 export default function Logo({ className }: LogoProps) {
   return (
     <div className={cx("logo", className)}>
-      <Image src="/images/main_logo.png" alt="Logo" width={140} height={45} />
+      <Image src="/images/main_logo.png" alt="Logo" width={135} height={48} />
     </div>
   );
 }
